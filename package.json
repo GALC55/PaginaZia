@@ -7,9 +7,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "cf:preview": "wrangler pages dev ./out",
-    "cf:deploy": "wrangler pages deploy ./out --project-name=pagina-zia",
-    "cf:deploy:preview": "wrangler pages deploy ./out --project-name=pagina-zia --branch=preview"
+    "cf:preview": "wrangler dev",
+    "cf:deploy": "wrangler deploy",
+    "cf:deploy:preview": "wrangler deploy --env preview"
   },
   "dependencies": {
     "@tanstack/react-query": "^5.100.10",
