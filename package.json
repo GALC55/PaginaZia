@@ -6,7 +6,10 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "cf:preview": "wrangler pages dev ./out",
+    "cf:deploy": "wrangler pages deploy ./out --project-name=pagina-zia",
+    "cf:deploy:preview": "wrangler pages deploy ./out --project-name=pagina-zia --branch=preview"
   },
   "dependencies": {
     "@tanstack/react-query": "^5.100.10",
@@ -21,6 +24,7 @@
     "@types/react-dom": "19.0.3",
     "postcss": "8.5.1",
     "tailwindcss": "^4.3.0",
-    "typescript": "5.7.3"
+    "typescript": "5.7.3",
+    "wrangler": "^3.114.17"
   }
 }
