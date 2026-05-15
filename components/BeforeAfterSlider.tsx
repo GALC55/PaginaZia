@@ -2,15 +2,18 @@
 
 import { useCallback, useEffect, useRef } from "react";
 import { FacePortrait } from "./FacePortrait";
+import { SiteImage } from "./SiteImage";
 import type { CaseStudy } from "@/lib/data";
 
 type Props = {
   caseData: CaseStudy;
+  index: number;
   position: number;
   setPosition: (n: number) => void;
 };
 
-export function BeforeAfterSlider({ caseData, position, setPosition }: Props) {
+export function BeforeAfterSlider({ caseData, index, position, setPosition }: Props) {
+  const slotBase = `case_${index + 1}`;
   const frameRef = useRef<HTMLDivElement>(null);
   const draggingRef = useRef(false);
 
@@ -62,11 +65,19 @@ export function BeforeAfterSlider({ caseData, position, setPosition }: Props) {
       onTouchStart={startDrag}
     >
       <div className="ba-img">
-        <FacePortrait variant="before" hue={caseData.hue} seed={caseData.seed} />
+        <SiteImage
+          slot={`${slotBase}_before`}
+          alt="Antes"
+          fallback={<FacePortrait variant="before" hue={caseData.hue} seed={caseData.seed} />}
+        />
       </div>
       <div className="ba-after-wrap" style={{ width: `${position}%` }}>
         <div className="ba-img" style={{ width: `${100 / (position / 100)}%` }}>
-          <FacePortrait variant="after" hue={caseData.hue} seed={caseData.seed} />
+          <SiteImage
+            slot={`${slotBase}_after`}
+            alt="Después"
+            fallback={<FacePortrait variant="after" hue={caseData.hue} seed={caseData.seed} />}
+          />
         </div>
       </div>
       <span className="ba-label before">Antes</span>

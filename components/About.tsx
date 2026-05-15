@@ -1,4 +1,5 @@
 import { FacePortrait } from "./FacePortrait";
+import { SiteImage } from "./SiteImage";
 
 const CREDS = [
   { yr: "2013", what: "Médica cirujana — Universidad de los Andes, Bogotá." },
@@ -14,7 +15,11 @@ export function About() {
         <div className="portrait-wrap">
           <div className="frame" />
           <div className="portrait">
-            <FacePortrait variant="after" hue={25} seed={7} />
+            <SiteImage
+              slot="about"
+              alt="Doctora"
+              fallback={<FacePortrait variant="after" hue={25} seed={7} />}
+            />
           </div>
         </div>
         <div>

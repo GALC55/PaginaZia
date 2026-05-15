@@ -1,5 +1,6 @@
 import { SERVICES } from "@/lib/data";
 import type { JSX } from "react";
+import { SiteImage } from "./SiteImage";
 
 function SvcGlyph({ i }: { i: number }) {
   const glyphs: JSX.Element[] = [
@@ -50,6 +51,12 @@ export function Services() {
         <div className="svc-grid">
           {SERVICES.map((s, i) => (
             <div className="svc" key={s.num}>
+              <SiteImage
+                slot={`service_${i + 1}`}
+                alt={s.title}
+                style={{ aspectRatio: "4 / 3", height: "auto", borderRadius: 12, marginBottom: 12 }}
+                fallback={null}
+              />
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
                 <span className="svc-num">— {s.num}</span>
                 <SvcGlyph i={i} />

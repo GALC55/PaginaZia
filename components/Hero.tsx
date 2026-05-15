@@ -1,5 +1,6 @@
 import { PetalDeco } from "./Logo";
 import { FacePortrait } from "./FacePortrait";
+import { SiteImage } from "./SiteImage";
 
 export function Hero() {
   return (
@@ -30,7 +31,11 @@ export function Hero() {
       <div className="visual">
         <div className="frame" />
         <div className="portrait">
-          <FacePortrait variant="after" hue={20} seed={9} />
+          <SiteImage
+            slot="hero"
+            alt="Retrato"
+            fallback={<FacePortrait variant="after" hue={20} seed={9} />}
+          />
         </div>
         <div className="badge">
           <div>

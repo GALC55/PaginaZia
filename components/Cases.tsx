@@ -4,6 +4,7 @@ import { useState } from "react";
 import { CASES } from "@/lib/data";
 import { BeforeAfterSlider } from "./BeforeAfterSlider";
 import { FacePortrait } from "./FacePortrait";
+import { SiteImage } from "./SiteImage";
 
 export function Cases() {
   const [idx, setIdx] = useState(0);
@@ -34,7 +35,7 @@ export function Cases() {
         </div>
 
         <div className="ba-stage">
-          <BeforeAfterSlider caseData={c} position={pos} setPosition={setPos} />
+          <BeforeAfterSlider caseData={c} index={idx} position={pos} setPosition={setPos} />
 
           <div className="case-panel">
             <span className="eyebrow">Caso #{String(idx + 1).padStart(2, "0")}</span>
@@ -83,7 +84,11 @@ export function Cases() {
               className={`case-thumb${i === idx ? " active" : ""}`}
               onClick={() => select(i)}
             >
-              <FacePortrait variant="after" hue={cs.hue} seed={cs.seed} />
+              <SiteImage
+                slot={`case_${i + 1}_after`}
+                alt={cs.name}
+                fallback={<FacePortrait variant="after" hue={cs.hue} seed={cs.seed} />}
+              />
               <span className="lbl">{cs.name}</span>
             </button>
           ))}
