@@ -6,6 +6,11 @@ export const metadata: Metadata = {
   title: "ZIA · Medicina Estética y Regenerativa",
   description:
     "Medicina estética y regenerativa con resultados naturales. Tratamientos personalizados en Bogotá.",
+  icons: {
+    icon: "/logo.png",
+    shortcut: "/logo.png",
+    apple: "/logo.png",
+  },
 };
 
 export default function RootLayout({
