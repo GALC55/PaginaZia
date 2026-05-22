@@ -25,11 +25,12 @@ export function Booking() {
       phone: String(fd.get("phone") || "").trim(),
       email: String(fd.get("email") || "").trim(),
       treatment: String(fd.get("treatment") || "").trim(),
-      message: String(fd.get("message") || "").trim()
+      message: String(fd.get("message") || "").trim(),
+      website: String(fd.get("website") || ""),
     };
 
     mutate(payload, {
-      onSuccess: () => form.reset()
+      onSuccess: () => form.reset(),
     });
   };
 
@@ -121,6 +122,18 @@ export function Booking() {
           </select>
           <label>Cuéntanos qué buscas</label>
           <textarea name="message" rows={3} placeholder="Objetivos, dudas, preferencias de horario…" />
+
+          {/* Honeypot: hidden field, real users leave it empty */}
+          <div
+            aria-hidden="true"
+            style={{ position: "absolute", left: "-10000px", width: 1, height: 1, overflow: "hidden" }}
+          >
+            <label>
+              No llenar
+              <input type="text" name="website" tabIndex={-1} autoComplete="off" />
+            </label>
+          </div>
+
           <button type="submit" className="btn btn-primary" disabled={isPending} aria-busy={isPending}>
             {isPending ? "Enviando…" : "Solicitar valoración"} <span className="arrow" />
           </button>

@@ -15,6 +15,11 @@
   --ink-2:  oklch(40% 0.015 10);
 }
 
+:root {
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+}
+
 @theme inline {
   --color-wine: var(--wine);
   --color-wine-2: var(--wine-2);
@@ -33,20 +38,24 @@
 }
 
 @layer base {
+  html {
+    scroll-behavior: smooth;
+  }
   html, body {
     background: var(--cream);
     color: var(--ink);
   }
   body {
     font-family: var(--font-sans);
-    font-weight: 300;
-    font-size: 16px;
-    line-height: 1.6;
+    font-weight: 400;
+    font-size: 16.5px;
+    line-height: 1.65;
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
   }
   a { color: inherit; text-decoration: none; }
   button { font: inherit; color: inherit; }
+  ::selection { background: color-mix(in oklch, var(--rose) 35%, transparent); color: var(--wine); }
 }
 
 /* ─── Shared components ─── */
@@ -80,9 +89,16 @@
     border: 1px solid currentColor;
     font-size: 12px; letter-spacing: 0.25em;
     text-transform: uppercase; font-weight: 500;
-    transition: all .3s ease;
+    transition:
+      background-color 220ms var(--ease-out),
+      color 220ms var(--ease-out),
+      border-color 220ms var(--ease-out),
+      transform 140ms var(--ease-out);
     cursor: pointer;
+    will-change: transform;
   }
+  .btn:active { transform: scale(0.97); }
+  .btn[disabled] { cursor: not-allowed; opacity: 0.7; }
   .btn-primary {
     background: var(--wine); color: var(--cream); border-color: var(--wine);
   }
@@ -115,8 +131,240 @@
   .section-head p {
     max-width: 580px; margin-inline: auto;
     color: var(--ink-2);
-    font-size: 16px;
+    font-size: 16.5px;
+    line-height: 1.65;
   }
+}
+
+/* ─── Motion primitives ─── */
+@keyframes ziaFadeUp {
+  from { opacity: 0; transform: translate3d(0, 24px, 0); }
+  to   { opacity: 1; transform: translate3d(0, 0, 0); }
+}
+@keyframes ziaFloat {
+  0%, 100% { transform: translate3d(0, 0, 0) rotate(var(--rot, 0deg)); }
+  50%      { transform: translate3d(0, -14px, 0) rotate(calc(var(--rot, 0deg) + 2deg)); }
+}
+@keyframes ziaKenburns {
+  from { transform: scale(1) translate3d(0, 0, 0); }
+  to   { transform: scale(1.06) translate3d(-1.5%, -1.5%, 0); }
+}
+@keyframes ziaShimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+@keyframes ziaDrawIn {
+  from { letter-spacing: 0.6em; opacity: 0; }
+  to   { letter-spacing: 4px;   opacity: 1; }
+}
+@keyframes ziaSweep {
+  0%   { left: 50%; }
+  35%  { left: 72%; }
+  70%  { left: 32%; }
+  100% { left: 50%; }
+}
+
+.reveal {
+  opacity: 0;
+  transform: translate3d(0, 18px, 0);
+  transition:
+    opacity 600ms var(--ease-out),
+    transform 600ms var(--ease-out);
+  will-change: opacity, transform;
+}
+.reveal-in {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+
+/* Stagger svc cards once parent reveal is in */
+.reveal .svc {
+  opacity: 0;
+  transform: translate3d(0, 12px, 0);
+  transition: opacity 500ms var(--ease-out), transform 500ms var(--ease-out);
+}
+.reveal-in .svc { opacity: 1; transform: translate3d(0, 0, 0); }
+.reveal-in .svc:nth-child(1) { transition-delay: 60ms; }
+.reveal-in .svc:nth-child(2) { transition-delay: 120ms; }
+.reveal-in .svc:nth-child(3) { transition-delay: 180ms; }
+.reveal-in .svc:nth-child(4) { transition-delay: 240ms; }
+.reveal-in .svc:nth-child(5) { transition-delay: 300ms; }
+.reveal-in .svc:nth-child(6) { transition-delay: 360ms; }
+
+/* Stagger trust items + testimonial cards similarly */
+.reveal .trust .item,
+.reveal .t-card {
+  opacity: 0;
+  transform: translate3d(0, 10px, 0);
+  transition: opacity 500ms var(--ease-out), transform 500ms var(--ease-out);
+}
+.reveal-in .trust .item,
+.reveal-in .t-card { opacity: 1; transform: translate3d(0, 0, 0); }
+.reveal-in .trust .item:nth-child(1),
+.reveal-in .t-card:nth-child(1) { transition-delay: 60ms; }
+.reveal-in .trust .item:nth-child(2),
+.reveal-in .t-card:nth-child(2) { transition-delay: 120ms; }
+.reveal-in .trust .item:nth-child(3),
+.reveal-in .t-card:nth-child(3) { transition-delay: 180ms; }
+.reveal-in .trust .item:nth-child(4) { transition-delay: 240ms; }
+
+/* Hero stagger on load */
+.hero .copy > * {
+  opacity: 0;
+  animation: ziaFadeUp 0.95s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+.hero .copy > *:nth-child(1) { animation-delay: 0.05s; }
+.hero .copy > *:nth-child(2) { animation-delay: 0.18s; }
+.hero .copy > *:nth-child(3) { animation-delay: 0.32s; }
+.hero .copy > *:nth-child(4) { animation-delay: 0.46s; }
+.hero .visual {
+  opacity: 0;
+  animation: ziaFadeUp 1.1s cubic-bezier(0.16, 1, 0.3, 1) 0.35s forwards;
+}
+.hero .visual .portrait img,
+.hero .visual .portrait svg {
+  animation: ziaKenburns 14s ease-in-out alternate infinite;
+  transform-origin: center;
+}
+.hero .petal-bg.tl { --rot: -12deg; animation: ziaFloat 9s ease-in-out infinite; }
+.hero .petal-bg.br { --rot: 6deg;  animation: ziaFloat 11s ease-in-out infinite reverse; }
+.hero h1 .accent::after {
+  animation: ziaFloat 4.5s ease-in-out infinite;
+}
+
+/* Nav: condense on scroll without layout shift */
+.nav {
+  transition: background 240ms var(--ease-out), box-shadow 240ms var(--ease-out);
+}
+.nav .row {
+  transform-origin: top center;
+  transition: transform 240ms var(--ease-out);
+}
+.nav.nav-scrolled {
+  background: color-mix(in oklch, var(--cream) 96%, transparent);
+  box-shadow: 0 6px 24px -18px oklch(34% 0.05 5 / 0.35);
+}
+.nav.nav-scrolled .row { transform: scale(0.94); }
+
+/* Buttons: arrow nudge + loading shimmer */
+.btn .arrow { transition: transform 0.25s ease; }
+.btn:hover .arrow { transform: translateX(6px); }
+.btn[aria-busy="true"] {
+  background: linear-gradient(
+    90deg,
+    var(--wine) 0%,
+    var(--wine-2) 40%,
+    var(--rose) 50%,
+    var(--wine-2) 60%,
+    var(--wine) 100%
+  );
+  background-size: 200% 100%;
+  animation: ziaShimmer 1.4s linear infinite;
+}
+
+/* Services: image scale on hover (gated for touch) */
+.svc { overflow: hidden; }
+.svc img { transition: transform 600ms var(--ease-out); will-change: transform; }
+.svc .glyph { transition: transform 500ms var(--ease-out), color 400ms ease; }
+@media (hover: hover) and (pointer: fine) {
+  .svc:hover img { transform: scale(1.04); }
+  .svc:hover .glyph { transform: rotate(12deg); }
+}
+
+/* Testimonials: replace italic body for readability, hover lift */
+.t-card {
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.4s ease,
+              background 0.4s ease;
+}
+.t-card:hover {
+  transform: translateY(-4px);
+  border-color: color-mix(in oklch, var(--gold) 55%, transparent);
+  background: color-mix(in oklch, var(--cream) 9%, transparent);
+}
+.t-card .body {
+  font-style: normal;
+  font-family: var(--font-sans);
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.7;
+  color: color-mix(in oklch, var(--cream) 92%, transparent);
+}
+.t-card .stars { animation: ziaDrawIn 1.1s cubic-bezier(0.16, 1, 0.3, 1) both; }
+
+/* Cases: initial sweep + thumb outline */
+.ba-frame.sweeping .ba-after-wrap,
+.ba-frame.sweeping .ba-handle { transition: none; }
+.case-thumb { transition: border-color 0.3s ease, transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
+.case-thumb:hover { transform: translateY(-2px); }
+.case-thumb.active {
+  box-shadow: 0 0 0 1px var(--wine), 0 12px 28px -18px oklch(34% 0.05 5 / 0.45);
+}
+
+/* About: portrait frame entrance */
+.about .portrait-wrap .frame {
+  transition: transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.reveal:not(.reveal-in) .about .portrait-wrap .frame {
+  transform: translate(0, 0);
+}
+
+/* Booking: form fields nicer focus, larger labels */
+form.book label {
+  font-size: 11.5px;
+  letter-spacing: 0.18em;
+}
+form.book input,
+form.book select,
+form.book textarea {
+  font-size: 15px;
+  padding: 14px 0;
+}
+form.book input,
+form.book select,
+form.book textarea {
+  border-bottom-width: 1px;
+  transition: border-color 0.3s ease, transform 0.3s ease;
+}
+form.book .row2 > div,
+form.book > div:not(.row2) {
+  position: relative;
+}
+form.book input:focus,
+form.book select:focus,
+form.book textarea:focus {
+  border-color: var(--wine);
+}
+
+/* Micro-typography tune-up */
+.nav .links { font-size: 13px; letter-spacing: 0.14em; }
+.nav .links a { font-weight: 500; }
+.svc-foot { font-size: 12px; letter-spacing: 0.16em; }
+.case-meta dt { font-size: 11.5px; letter-spacing: 0.16em; }
+.trust .lbl { font-size: 11.5px; letter-spacing: 0.18em; line-height: 1.5; }
+footer.site ul { font-size: 14.5px; }
+footer.site .copy-bar { color: color-mix(in oklch, var(--cream) 78%, transparent); }
+footer.site ul a { transition: color 0.25s ease, padding-left 0.25s ease; }
+footer.site ul a:hover { padding-left: 4px; }
+
+/* Section head lede stronger */
+.section-head p,
+.hero p.lede,
+.about .lede,
+.booking .info {
+  color: color-mix(in oklch, var(--ink) 75%, var(--cream));
+  font-weight: 400;
+}
+
+/* Reduced motion respect */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+  .reveal { opacity: 1; transform: none; }
 }
 
 /* ─── Hero ─── */
@@ -265,6 +513,9 @@
   font-size: 44px; line-height: 1;
   color: var(--wine);
   font-weight: 400;
+  font-variant-numeric: tabular-nums;
+  display: inline-block;
+  min-width: 3.2ch;
 }
 .trust .lbl {
   font-size: 11px;
@@ -643,9 +894,11 @@ form.book .legal { font-size: 11px; color: var(--ink-2); margin-top: 14px; text-
   border: 1px solid var(--gold);
   font-size: 12px; letter-spacing: 0.2em; text-transform: uppercase;
   z-index: 100;
-  transition: transform .35s ease;
+  transition: transform 260ms var(--ease-out), opacity 200ms ease;
+  will-change: transform;
 }
 .toast.show { transform: translateX(-50%) translateY(0); }
+.toast[role="alert"] { background: oklch(45% 0.15 25); border-color: oklch(70% 0.1 25); }
 
 /* ─── Footer ─── */
 footer.site {

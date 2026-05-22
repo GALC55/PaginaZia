@@ -8,6 +8,7 @@ export type AppointmentRequestInput = {
   treatment: string;
   message: string;
   source?: string;
+  website?: string;
 };
 
 export type AppointmentRequest = {

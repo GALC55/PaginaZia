@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { CASES } from "@/lib/data";
 import { BeforeAfterSlider } from "./BeforeAfterSlider";
 import { FacePortrait } from "./FacePortrait";
@@ -10,6 +10,40 @@ export function Cases() {
   const [idx, setIdx] = useState(0);
   const [pos, setPos] = useState(50);
   const c = CASES[idx];
+  const sectionRef = useRef<HTMLElement>(null);
+  const sweptRef = useRef(false);
+
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el || sweptRef.current) return;
+    if (typeof IntersectionObserver === "undefined") return;
+    const reduced =
+      window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduced) return;
+
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          if (!e.isIntersecting || sweptRef.current) return;
+          sweptRef.current = true;
+          io.disconnect();
+          const start = performance.now();
+          const duration = 2400;
+          const step = (now: number) => {
+            const p = Math.min(1, (now - start) / duration);
+            const v = 50 + Math.sin(p * Math.PI * 2) * 22;
+            setPos(v);
+            if (p < 1) requestAnimationFrame(step);
+            else setPos(50);
+          };
+          setTimeout(() => requestAnimationFrame(step), 500);
+        });
+      },
+      { threshold: 0.35 }
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
 
   const change = (n: number) => {
     setIdx((idx + n + CASES.length) % CASES.length);
@@ -21,7 +55,7 @@ export function Cases() {
   };
 
   return (
-    <section className="cases section-pad" id="casos">
+    <section className="cases section-pad" id="casos" ref={sectionRef}>
       <div className="wrap">
         <div className="section-head">
           <span className="eyebrow">Casos de éxito</span>
