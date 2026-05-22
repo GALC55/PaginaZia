@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { QueryProvider } from "@/components/QueryProvider";
 import "./globals.css";
 
@@ -11,6 +11,13 @@ export const metadata: Metadata = {
     shortcut: "/logo.png",
     apple: "/logo.png",
   },
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
+  themeColor: "#3a1820",
 };
 
 export default function RootLayout({
@@ -33,6 +40,7 @@ export default function RootLayout({
         />
       </head>
       <body>
+        <a href="#top" className="skip-link">Saltar al contenido</a>
         <QueryProvider>{children}</QueryProvider>
       </body>
     </html>

@@ -17,12 +17,13 @@ export function TopBar() {
           </span>
         </div>
         <div className="right">
-          <a href="#contacto">
+          <a href="tel:+573001234567" aria-label="Llamar al +57 300 123 4567">
             <svg
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
               strokeWidth="1.6"
+              aria-hidden="true"
               style={{ display: "inline-block", verticalAlign: "middle", marginRight: 6 }}
             >
               <path
@@ -31,20 +32,21 @@ export function TopBar() {
                 strokeLinejoin="round"
               />
             </svg>
-            +57 300 123 4567
+            <span className="tb-text">+57 300 123 4567</span>
           </a>
-          <a href="#contacto">
+          <a href="#contacto" aria-label="Ver dirección y mapa">
             <svg
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
               strokeWidth="1.6"
+              aria-hidden="true"
               style={{ display: "inline-block", verticalAlign: "middle", marginRight: 6 }}
             >
               <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" strokeLinecap="round" strokeLinejoin="round" />
               <circle cx="12" cy="10" r="3" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
-            Cra. 11 #94-22, Bogotá
+            <span className="tb-text">Cra. 11 #94-22, Bogotá</span>
           </a>
         </div>
       </div>

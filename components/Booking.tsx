@@ -89,29 +89,29 @@ export function Booking() {
           </div>
         </div>
 
-        <form className="book" onSubmit={submit}>
+        <form className="book" onSubmit={submit} noValidate aria-label="Formulario de agenda de valoración">
           <div className="row2">
             <div>
-              <label>Nombre</label>
-              <input name="first_name" type="text" required placeholder="Tu nombre" />
+              <label htmlFor="bk-first">Nombre</label>
+              <input id="bk-first" name="first_name" type="text" required autoComplete="given-name" placeholder="Tu nombre" />
             </div>
             <div>
-              <label>Apellido</label>
-              <input name="last_name" type="text" required placeholder="Tu apellido" />
+              <label htmlFor="bk-last">Apellido</label>
+              <input id="bk-last" name="last_name" type="text" required autoComplete="family-name" placeholder="Tu apellido" />
             </div>
           </div>
           <div className="row2">
             <div>
-              <label>Teléfono</label>
-              <input name="phone" type="tel" required placeholder="+57 ___ ___ ____" />
+              <label htmlFor="bk-phone">Teléfono</label>
+              <input id="bk-phone" name="phone" type="tel" required inputMode="tel" autoComplete="tel" placeholder="+57 ___ ___ ____" />
             </div>
             <div>
-              <label>Email</label>
-              <input name="email" type="email" required placeholder="tu@correo.com" />
+              <label htmlFor="bk-email">Email</label>
+              <input id="bk-email" name="email" type="email" required inputMode="email" autoComplete="email" placeholder="tu@correo.com" />
             </div>
           </div>
-          <label>Tratamiento de interés</label>
-          <select name="treatment" defaultValue="">
+          <label htmlFor="bk-treatment">Tratamiento de interés</label>
+          <select id="bk-treatment" name="treatment" defaultValue="">
             <option value="" disabled>
               Selecciona una opción
             </option>
@@ -120,8 +120,8 @@ export function Booking() {
             ))}
             <option value="Valoración general">Valoración general</option>
           </select>
-          <label>Cuéntanos qué buscas</label>
-          <textarea name="message" rows={3} placeholder="Objetivos, dudas, preferencias de horario…" />
+          <label htmlFor="bk-message">Cuéntanos qué buscas</label>
+          <textarea id="bk-message" name="message" rows={3} placeholder="Objetivos, dudas, preferencias de horario…" />
 
           {/* Honeypot: hidden field, real users leave it empty */}
           <div
