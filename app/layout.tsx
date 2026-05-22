@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import { Toaster } from "sonner";
 import { QueryProvider } from "@/components/QueryProvider";
 import "./globals.css";
 
@@ -42,6 +43,28 @@ export default function RootLayout({
       <body>
         <a href="#top" className="skip-link">Saltar al contenido</a>
         <QueryProvider>{children}</QueryProvider>
+        <Toaster
+          position="bottom-center"
+          duration={4200}
+          closeButton
+          richColors={false}
+          theme="light"
+          toastOptions={{
+            className: "zia-toast",
+            style: {
+              background: "var(--wine)",
+              color: "var(--cream)",
+              border: "1px solid color-mix(in oklch, var(--gold) 55%, transparent)",
+              borderRadius: "2px",
+              fontFamily: "var(--font-sans)",
+              fontSize: "13px",
+              letterSpacing: "0.12em",
+              textTransform: "uppercase",
+              padding: "16px 22px",
+              boxShadow: "0 24px 48px -24px oklch(0% 0 0 / 0.45)",
+            },
+          }}
+        />
       </body>
     </html>
   );

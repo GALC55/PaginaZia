@@ -1,12 +1,25 @@
 "use client";
 
 import { useEffect, type FormEvent } from "react";
+import { toast } from "sonner";
 import { SERVICES } from "@/lib/data";
 import { useCreateAppointmentRequest } from "@/features/appointments/queries";
 
 export function Booking() {
   const mutation = useCreateAppointmentRequest();
   const { mutate, isPending, isSuccess, isError, error, reset } = mutation;
+
+  useEffect(() => {
+    if (isSuccess) {
+      toast.success("Solicitud recibida · te contactaremos pronto");
+    }
+  }, [isSuccess]);
+
+  useEffect(() => {
+    if (isError) {
+      toast.error(error?.message || "No se pudo enviar la solicitud");
+    }
+  }, [isError, error]);
 
   useEffect(() => {
     if (!isSuccess && !isError) return;
@@ -38,7 +51,6 @@ export function Booking() {
     <section className="booking section-pad" id="contacto">
       <div className="wrap wrap-grid">
         <div>
-          <span className="eyebrow">Agenda tu valoración</span>
           <h2>
             Hablemos de tu <em>piel</em>
           </h2>
@@ -91,37 +103,39 @@ export function Booking() {
 
         <form className="book" onSubmit={submit} noValidate aria-label="Formulario de agenda de valoración">
           <div className="row2">
-            <div>
+            <div className="field">
+              <input id="bk-first" name="first_name" type="text" required autoComplete="given-name" placeholder=" " />
               <label htmlFor="bk-first">Nombre</label>
-              <input id="bk-first" name="first_name" type="text" required autoComplete="given-name" placeholder="Tu nombre" />
             </div>
-            <div>
+            <div className="field">
+              <input id="bk-last" name="last_name" type="text" required autoComplete="family-name" placeholder=" " />
               <label htmlFor="bk-last">Apellido</label>
-              <input id="bk-last" name="last_name" type="text" required autoComplete="family-name" placeholder="Tu apellido" />
             </div>
           </div>
           <div className="row2">
-            <div>
+            <div className="field">
+              <input id="bk-phone" name="phone" type="tel" required inputMode="tel" autoComplete="tel" placeholder=" " />
               <label htmlFor="bk-phone">Teléfono</label>
-              <input id="bk-phone" name="phone" type="tel" required inputMode="tel" autoComplete="tel" placeholder="+57 ___ ___ ____" />
             </div>
-            <div>
+            <div className="field">
+              <input id="bk-email" name="email" type="email" required inputMode="email" autoComplete="email" placeholder=" " />
               <label htmlFor="bk-email">Email</label>
-              <input id="bk-email" name="email" type="email" required inputMode="email" autoComplete="email" placeholder="tu@correo.com" />
             </div>
           </div>
-          <label htmlFor="bk-treatment">Tratamiento de interés</label>
-          <select id="bk-treatment" name="treatment" defaultValue="">
-            <option value="" disabled>
-              Selecciona una opción
-            </option>
-            {SERVICES.map((s) => (
-              <option key={s.num} value={s.title}>{s.title}</option>
-            ))}
-            <option value="Valoración general">Valoración general</option>
-          </select>
-          <label htmlFor="bk-message">Cuéntanos qué buscas</label>
-          <textarea id="bk-message" name="message" rows={3} placeholder="Objetivos, dudas, preferencias de horario…" />
+          <div className="field field-select">
+            <select id="bk-treatment" name="treatment" defaultValue="" required>
+              <option value="" disabled></option>
+              {SERVICES.map((s) => (
+                <option key={s.num} value={s.title}>{s.title}</option>
+              ))}
+              <option value="Valoración general">Valoración general</option>
+            </select>
+            <label htmlFor="bk-treatment">Tratamiento de interés</label>
+          </div>
+          <div className="field">
+            <textarea id="bk-message" name="message" rows={3} placeholder=" " />
+            <label htmlFor="bk-message">Cuéntanos qué buscas</label>
+          </div>
 
           {/* Honeypot: hidden field, real users leave it empty */}
           <div
@@ -139,13 +153,6 @@ export function Booking() {
           </button>
           <p className="legal">Te respondemos en menos de 24 horas hábiles.</p>
         </form>
-
-        <div className={`toast${isSuccess ? " show" : ""}`} role="status" aria-live="polite">
-          ◆ Solicitud recibida · te contactaremos pronto
-        </div>
-        <div className={`toast${isError ? " show" : ""}`} role="alert" aria-live="assertive">
-          ◆ {error?.message || "No se pudo enviar la solicitud"}
-        </div>
       </div>
     </section>
   );

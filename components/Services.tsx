@@ -39,7 +39,6 @@ export function Services() {
     <section className="services section-pad" id="tratamientos">
       <div className="wrap">
         <div className="section-head">
-          <span className="eyebrow">Tratamientos</span>
           <h2>
             Un protocolo para <em>cada historia</em>
           </h2>
