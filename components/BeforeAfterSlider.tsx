@@ -63,6 +63,7 @@ export function BeforeAfterSlider({ caseData, index, position, setPosition }: Pr
       ref={frameRef}
       onMouseDown={startDrag}
       onTouchStart={startDrag}
+      style={{ ["--ba-pos" as string]: `${position}%` }}
     >
       <div className="ba-img">
         <SiteImage
@@ -71,8 +72,8 @@ export function BeforeAfterSlider({ caseData, index, position, setPosition }: Pr
           fallback={<FacePortrait variant="before" hue={caseData.hue} seed={caseData.seed} />}
         />
       </div>
-      <div className="ba-after-wrap" style={{ width: `${position}%` }}>
-        <div className="ba-img" style={{ width: `${100 / (position / 100)}%` }}>
+      <div className="ba-after-wrap">
+        <div className="ba-img">
           <SiteImage
             slot={`${slotBase}_after`}
             alt="Después"
@@ -82,7 +83,7 @@ export function BeforeAfterSlider({ caseData, index, position, setPosition }: Pr
       </div>
       <span className="ba-label before">Antes</span>
       <span className="ba-label after">Después</span>
-      <div className="ba-handle" style={{ left: `${position}%` }}>
+      <div className="ba-handle">
         <div className="ba-knob">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
             <path d="M9 6l-6 6 6 6M15 6l6 6-6 6" strokeLinecap="round" strokeLinejoin="round" />
